@@ -2,15 +2,15 @@
 title: "Repo and Node"
 subtitle: A Reproducibility Workflow  + Tips and Tricks for the Cluster
 output:
-  slidy_presentation:
+  beamer_presentation:
     incremental: no
-    font_adjustment: -2
     highlight: pygments
   ioslides_presentation:
     incremental: no
     highlight: pygments
-  beamer_presentation:
+  slidy_presentation:
     incremental: no
+    font_adjustment: -2
     highlight: pygments
 ---
 # Credit
