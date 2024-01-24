@@ -68,7 +68,7 @@ brew install rclone
 # Introduction to CHPC
 
 <p align="center">
-  <img src="figures/overview.svg" style="width:auto;max-width:200%">
+  <img src="figures/overview.png" style="width:auto;max-width:200%">
 </p>
 
 There are two types of things you need to worry about: **nodes** and **file systems** (hard drives).
@@ -76,7 +76,7 @@ There are two types of things you need to worry about: **nodes** and **file syst
 # Introduction to CHPC
 
 <p align="center">
-  <img src="figures/overview.svg" style="width:auto;max-width:200%">
+  <img src="figures/overview.png" style="width:auto;max-width:200%">
 </p>
 
 **Nodes** are self-contained computers.
@@ -117,7 +117,7 @@ I try to avoid logging into transfer nodes, and instead write scripts to move da
 # Introduction to CHPC
 
 <p align="center">
-  <img src="figures/overview.svg" style="width:auto;max-width:200%">
+  <img src="figures/overview.png" style="width:auto;max-width:200%">
 </p>
 
 There are two file systems (basically, sets of hard drives).
@@ -125,7 +125,7 @@ There are two file systems (basically, sets of hard drives).
 # Introduction to CHPC
 
 <p align="center">
-  <img src="figures/nfs.svg" style="width:auto;max-width:200%">
+  <img src="figures/nfs.png" style="width:auto;max-width:200%">
 </p>
 
 There are two file systems (basically, sets of hard drives).
@@ -136,7 +136,7 @@ This is the location you will want to intstall programs (if needed).
 # Introduction to CHPC
 
 <p align="center">
-  <img src="figures/scratch.svg" style="width:auto;max-width:200%">
+  <img src="figures/scratch.png" style="width:auto;max-width:200%">
 </p>
 
 There are two file systems (basically, sets of hard drives).
@@ -151,7 +151,7 @@ However, there is a strict purging policy. **Files that have not been accessed f
 # Introduction to CHPC
 
 <p align="center">
-  <img src="figures/scratch.svg" style="width:auto;max-width:200%">
+  <img src="figures/scratch.png" style="width:auto;max-width:200%">
 </p>
 
 There are two file systems (basically, sets of hard drives).
@@ -245,7 +245,7 @@ module spider iqtree
 # git, CHPC, and data transfer
 
 <p align="center">
-  <img src="figures/workflow_6.svg" style="width:auto;max-width:200%">
+  <img src="figures/workflow_6.png" style="width:auto;max-width:200%">
 </p>
 
 There are four systems involved.
@@ -253,7 +253,7 @@ There are four systems involved.
 # git, CHPC, and data transfer
 
 <p align="center">
-  <img src="figures/workflow_5.svg" style="width:auto;max-width:200%">
+  <img src="figures/workflow_5.png" style="width:auto;max-width:200%">
 </p>
 
 Two of them are "temporary" (my local machine, and savio)---these may get lost or deleted!
@@ -263,7 +263,7 @@ The other two are "archives" (git and BOX)---these should stay around forever!
 # git, CHPC, and data transfer
 
 <p align="center">
-  <img src="figures/workflow_4.svg" style="width:auto;max-width:200%">
+  <img src="figures/workflow_4.png" style="width:auto;max-width:200%">
 </p>
 
 I use different methods to transfer small files (tracked in the repo) and large files (stored in BOX).
@@ -271,7 +271,7 @@ I use different methods to transfer small files (tracked in the repo) and large 
 # git, CHPC, and data transfer
 
 <p align="center">
-  <img src="figures/workflow_3.svg" style="width:auto;max-width:200%">
+  <img src="figures/workflow_3.png" style="width:auto;max-width:200%">
 </p>
 
 I track all my small files using a git repository.
@@ -280,7 +280,7 @@ Then I use push and pull (/clone) to synchronize savio with my local repository.
 # git, CHPC, and data transfer
 
 <p align="center">
-  <img src="figures/workflow_2.svg" style="width:auto;max-width:200%">
+  <img src="figures/workflow_2.png" style="width:auto;max-width:200%">
 </p>
 
 I use `rclone` to transfer large files to savio.
@@ -289,7 +289,7 @@ I use `rclone` to transfer large files to savio.
 # git, CHPC, and data transfer
 
 <p align="center">
-  <img src="figures/workflow_2.svg" style="width:auto;max-width:200%">
+  <img src="figures/workflow_2.png" style="width:auto;max-width:200%">
 </p>
 
 I have one set of `rclone` scripts that transfer data from my local machine to BOX, then from BOX to savio.
@@ -297,7 +297,7 @@ I have one set of `rclone` scripts that transfer data from my local machine to B
 # git, CHPC, and data transfer
 
 <p align="center">
-  <img src="figures/workflow_1.svg" style="width:auto;max-width:200%">
+  <img src="figures/workflow_1.png" style="width:auto;max-width:200%">
 </p>
 
 I have one set of `rclone` scripts that transfer data from my local machine to BOX, then from BOX to savio.
@@ -581,7 +581,7 @@ How am I going to get my files?!?!?!
 # Data transfer with `rclone`
 
 <p align="center">
-  <img src="figures/workflow_1.svg" style="width:auto;max-width:200%">
+  <img src="figures/workflow_1.png" style="width:auto;max-width:200%">
 </p>
 
 # Data transfer with `rclone`
