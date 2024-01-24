@@ -483,7 +483,7 @@ CHPC uses the batch submission software `SLURM`.
 `SLURM` is reponsible for coordinating everyone's jobs in the most efficient and fair way possible.
 
 This means your job has a certain priority based on how much time you request, and how much you have used the system recently!
-Sometimes you may sit in the queue for a while (in my experience, up to a day if you're doing lots of log jobs).
+Sometimes you may sit in the queue for a while (in my experience, up to a day if you're doing lots of long jobs).
 
 # Running jobs on CHPC
 
@@ -636,7 +636,7 @@ DEMO TIME!
 I then login to the **data transfer node** and repeat.
 ```{r, engine = 'bash', eval = FALSE}
 # log in to CHPC DTN!
-ssh mrmay@dtn.brc.berkeley.edu
+ssh u6049165@dtn05.chpc.utah.edu
 ```
 
 # Data transfer with `rclone`
@@ -649,7 +649,7 @@ Now, I can use `rclone` to synchronize files between storage locations.
 
 To transfer a file from my local machine to BOX, I do this:
 ```{r, engine = 'bash', eval = FALSE}
-rclone sync data/ MY_BOX:chpc_workflow/data/
+rclone sync data/ BOX_USU:chpc_workflow/data/
 ```
 
 # Data transfer with `rclone`
@@ -658,14 +658,14 @@ Now, I can use `rclone` to synchronize files between storage locations.
 
 To transfer a file from my local machine to BOX, I do this:
 ```{r, engine = 'bash', eval = FALSE}
-rclone sync data/ MY_BOX:chpc_workflow/data/
+rclone sync data/ BOX_USU:chpc_workflow/data/
 ```
 
 The first argument (`sync`) means the remote files will only be updated if they're out of date!
 
 The second argument (`data/`) is the file (or directories) I want to send to the remote.
 
-The third (`MY_BOX:chpc_workflow/data/`) is the destination on BOX.
+The third (`BOX_USU:chpc_workflow/data/`) is the destination on BOX.
 
 # Data transfer with `rclone`
 

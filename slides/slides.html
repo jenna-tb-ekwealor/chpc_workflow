@@ -537,6 +537,8 @@ list-style-type: none;
 <ul>
 <li>should come installed by default on macOS</li>
 </ul></li>
+<li><strong>GitHub Desktop</strong> (optional but it’s nice so I
+recommend it)</li>
 </ul>
 </div>
 <div id="software-prerequisites-on-local-machine-2" class="slide section level1">
@@ -546,6 +548,8 @@ list-style-type: none;
 <ul>
 <li>should come installed by default on macOS</li>
 </ul></li>
+<li><strong>GitHub Desktop</strong> (optional but it’s nice so I
+recommend it)</li>
 <li><strong>homebrew</strong> for installing software locally
 <ul>
 <li><a href="https://brew.sh/" class="uri">https://brew.sh/</a></li>
@@ -559,6 +563,8 @@ list-style-type: none;
 <ul>
 <li>should come installed by default on macOS</li>
 </ul></li>
+<li><strong>GitHub Desktop</strong> (optional but it’s nice so I
+recommend it)</li>
 <li><strong>homebrew</strong> for installing software locally
 <ul>
 <li><a href="https://brew.sh/" class="uri">https://brew.sh/</a></li>
@@ -575,6 +581,8 @@ and your computer</li>
 <ul>
 <li>should come installed by default on macOS</li>
 </ul></li>
+<li><strong>GitHub Desktop</strong> (optional but it’s nice so I
+recommend it)</li>
 <li><strong>homebrew</strong> for installing software locally
 <ul>
 <li><a href="https://brew.sh/" class="uri">https://brew.sh/</a></li>
@@ -596,6 +604,8 @@ CHPC, BOX, and your computer</li>
 <ul>
 <li>should come installed by default on macOS</li>
 </ul></li>
+<li><strong>GitHub Desktop</strong> (optional but it’s nice so I
+recommend it)</li>
 <li><strong>homebrew</strong> for installing software locally
 <ul>
 <li><a href="https://brew.sh/" class="uri">https://brew.sh/</a></li>
@@ -707,7 +717,7 @@ node, or on a compute node), use:</p>
 <p>or</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="bu">cd</span> /scratch/general/vast</span></code></pre></div>
 <p>then create a directory for yourself with:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">mkdir</span> u6049165</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">mkdir</span> u6049165 </span></code></pre></div>
 <p>Note that everyone will be able to see your directory name in the
 list but they won’t be able to access the contents, unless you
 specifically give access to them.</p>
@@ -868,7 +878,7 @@ local machine (if necessary).</p>
 <h1>git, CHPC, and data transfer</h1>
 <p>I make some local changes, stage and commit them, and then push them
 to the remote.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">git</span> stage .</span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">git</span> add .</span>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;some new changes!&quot;</span></span>
 <span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="fu">git</span> pull</span>
 <span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div>
@@ -880,7 +890,8 @@ to the remote.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># log in to CHPC, for instance notchpeak</span></span>
 <span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="fu">ssh</span> u6049165@notchpeak.chpc.utah.edu</span>
 <span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co"># change to my scratch directory</span></span></code></pre></div>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co"># change to my scratch directory</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="bu">cd</span> /scratch/general/nfs1/u6049165</span></code></pre></div>
 </div>
 <div id="git-chpc-and-data-transfer-11" class="slide section level1">
 <h1>git, CHPC, and data transfer</h1>
@@ -890,20 +901,20 @@ repo:</p>
 <span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/jenna-tb-ekwealor/chpc_workflow.git</span>
 <span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a></span>
 <span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co"># change to that directory</span></span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="bu">cd</span> CHPC_workflow</span></code></pre></div>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="bu">cd</span> chpc_workflow</span></code></pre></div>
 </div>
 <div id="git-chpc-and-data-transfer-12" class="slide section level1">
 <h1>git, CHPC, and data transfer</h1>
 <p>If this is the first time using the repo with CHPC, I clone the
 repo:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># clone</span></span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="fu">git</span> clone https://mrmay@bitbucket.org/mrmay/CHPC_workflow.git</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/jenna-tb-ekwealor/chpc_workflow.git</span>
 <span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a></span>
 <span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="co"># change to that directory</span></span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="bu">cd</span> CHPC_workflow</span></code></pre></div>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="bu">cd</span> chpc_workflow</span></code></pre></div>
 <p>Otherwise, I navigate to the repo and pull my new changes</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co"># change to that directory</span></span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="bu">cd</span> CHPC_workflow</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="bu">cd</span> chpc_workflow</span>
 <span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a></span>
 <span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="co"># pull</span></span>
 <span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="fu">git</span> pull</span></code></pre></div>
@@ -960,7 +971,9 @@ return to <em>automating</em> this for large data files later, when I
 talk about <code>rclone</code>.</p>
 <p>On my <strong>local machine</strong>, I use <code>rsync</code> like
 so, to send my file to CHPC:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-a</span> data/big_data.zip mrmay@dtn.brc.berkeley.edu:/global/scratch/users/mrmay/CHPC_workflow/data</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-a</span> data/big_data.zip u6049165@dtn05.chpc.utah.edu:/scratch/general/nfs1/u6049165/chpc_workflow/data/</span></code></pre></div>
+<p>(Another option is to use a file transer GUI like FileZilla or
+CyberDuck but we’re not covering that today.)</p>
 </div>
 <div id="git-chpc-and-data-transfer-19" class="slide section level1">
 <h1>git, CHPC, and data transfer</h1>
@@ -971,10 +984,11 @@ return to <em>automating</em> this for large data files later, when I
 talk about <code>rclone</code>.</p>
 <p>On my <strong>local machine</strong>, I use <code>rsync</code> like
 so, to send my file to CHPC:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-a</span> data/big_data.zip mrmay@dtn.brc.berkeley.edu:/global/scratch/users/mrmay/CHPC_workflow/data</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-a</span> data/big_data.zip u6049165@dtn05.chpc.utah.edu:/scratch/general/nfs1/u6049165/chpc_workflow/data/</span></code></pre></div>
 <p><strong>NOTE:</strong></p>
 <ul>
-<li><em><strong>I’m using the data transfer node!</strong></em></li>
+<li><em><strong>I’m using the data transfer node!</strong></em> See more
+about those <a href="https://www.chpc.utah.edu/documentation/data_services.php#Data_Transfer_Nodes">here</a>.</li>
 <li><code>-a</code> is “archive” mode: it only updates the remote file
 if it’s changed.</li>
 <li>The first argument is the <em>relative path to the file I want to
@@ -1018,28 +1032,34 @@ you’re doing lots of log jobs).</p>
 <h1>Running jobs on CHPC</h1>
 <p>Here is what a <code>SLURM</code> script looks like:</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="co">#SBATCH --partition=CHPC</span></span>
-<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a><span class="co">#SBATCH --account=fc_rothfelslab</span></span>
-<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a><span class="co">#SBATCH --qos=CHPC_normal</span></span>
-<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a><span class="co">#SBATCH --job-name=simple_example</span></span>
-<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a><span class="co">#SBATCH --mail-user=mikeryanmay@gmail.edu</span></span>
-<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a><span class="co">#SBATCH --mail-type=ALL</span></span>
-<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
-<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a><span class="co">#SBATCH --time=00:00:30</span></span>
-<span id="cb25-10"><a href="#cb25-10" tabindex="-1"></a></span>
-<span id="cb25-11"><a href="#cb25-11" tabindex="-1"></a><span class="co"># change to user directory</span></span>
-<span id="cb25-12"><a href="#cb25-12" tabindex="-1"></a><span class="va">old_dir</span><span class="op">=</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span></span>
-<span id="cb25-13"><a href="#cb25-13" tabindex="-1"></a><span class="bu">cd</span> /global/scratch/users/<span class="va">$USER</span>/CHPC_workflow/simple/</span>
-<span id="cb25-14"><a href="#cb25-14" tabindex="-1"></a></span>
-<span id="cb25-15"><a href="#cb25-15" tabindex="-1"></a><span class="co"># make the output directory</span></span>
-<span id="cb25-16"><a href="#cb25-16" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> output</span>
-<span id="cb25-17"><a href="#cb25-17" tabindex="-1"></a></span>
-<span id="cb25-18"><a href="#cb25-18" tabindex="-1"></a><span class="co"># run your code</span></span>
-<span id="cb25-19"><a href="#cb25-19" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Hello World&quot;</span> <span class="op">&gt;</span> output/simple.txt</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="co">#SBATCH</span></span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a><span class="co">#SBATCH --time=00:10:00</span></span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a><span class="co"># additional information for allocated clusters</span></span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a><span class="co">#SBATCH --account=rothfels</span></span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a><span class="co">#SBATCH --partition=notchpeak</span></span>
+<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a><span class="co">#SBATCH --mail-type=FAIL,</span><span class="re">BEGIN</span><span class="co">,</span><span class="re">END</span></span>
+<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb25-10"><a href="#cb25-10" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb25-11"><a href="#cb25-11" tabindex="-1"></a><span class="co"># ----------------Modules------------------------- #</span></span>
+<span id="cb25-12"><a href="#cb25-12" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb25-13"><a href="#cb25-13" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb25-14"><a href="#cb25-14" tabindex="-1"></a><span class="co"># ----------------Your Commands------------------- #</span></span>
+<span id="cb25-15"><a href="#cb25-15" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb25-16"><a href="#cb25-16" tabindex="-1"></a></span>
+<span id="cb25-17"><a href="#cb25-17" tabindex="-1"></a><span class="co"># change to user directory of choice</span></span>
+<span id="cb25-18"><a href="#cb25-18" tabindex="-1"></a><span class="va">old_dir</span><span class="op">=</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span></span>
+<span id="cb25-19"><a href="#cb25-19" tabindex="-1"></a><span class="bu">cd</span> /scratch/general/nfs1/u6049165/chpc_workflow/simple/</span>
 <span id="cb25-20"><a href="#cb25-20" tabindex="-1"></a></span>
-<span id="cb25-21"><a href="#cb25-21" tabindex="-1"></a><span class="co"># move log file</span></span>
-<span id="cb25-22"><a href="#cb25-22" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> log</span>
-<span id="cb25-23"><a href="#cb25-23" tabindex="-1"></a><span class="fu">mv</span> <span class="st">&quot;</span><span class="va">${old_dir}</span><span class="st">/slurm-</span><span class="va">${SLURM_JOB_ID}</span><span class="st">.out&quot;</span> <span class="st">&quot;log/slurm-</span><span class="va">${SLURM_JOB_ID}</span><span class="st">.out&quot;</span></span></code></pre></div>
+<span id="cb25-21"><a href="#cb25-21" tabindex="-1"></a><span class="co"># make the output directory</span></span>
+<span id="cb25-22"><a href="#cb25-22" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> output</span>
+<span id="cb25-23"><a href="#cb25-23" tabindex="-1"></a></span>
+<span id="cb25-24"><a href="#cb25-24" tabindex="-1"></a><span class="co"># run your code</span></span>
+<span id="cb25-25"><a href="#cb25-25" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Hello World&quot;</span> <span class="op">&gt;</span> output/simple.txt</span>
+<span id="cb25-26"><a href="#cb25-26" tabindex="-1"></a></span>
+<span id="cb25-27"><a href="#cb25-27" tabindex="-1"></a><span class="co"># move log file</span></span>
+<span id="cb25-28"><a href="#cb25-28" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> log</span>
+<span id="cb25-29"><a href="#cb25-29" tabindex="-1"></a><span class="fu">mv</span> <span class="st">&quot;</span><span class="va">${old_dir}</span><span class="st">/slurm-</span><span class="va">${SLURM_JOB_ID}</span><span class="st">.out&quot;</span> <span class="st">&quot;log/slurm-</span><span class="va">${SLURM_JOB_ID}</span><span class="st">.out&quot;</span></span></code></pre></div>
 </div>
 <div id="running-jobs-on-chpc-5" class="slide section level1">
 <h1>Running jobs on CHPC</h1>
@@ -1059,7 +1079,7 @@ time you use <code>squeue</code>!)</p>
 on that node whether you use them!</p>
 <p>The amount you get charged is nodes x cores x how long the job ran
 (not how much time you requested).</p>
-<p>So, you want to either: 1) use all the cores for a given job, or 2)
+<p>So, you want to either: (1) use all the cores for a given job, or (2)
 run multiple jobs simultaneously.</p>
 </div>
 <div id="running-jobs-on-chpc-8" class="slide section level1">
@@ -1142,7 +1162,7 @@ configuration like so:</p>
 <p>I then login to the <strong>data transfer node</strong> and
 repeat.</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="co"># log in to CHPC DTN!</span></span>
-<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a><span class="fu">ssh</span> mrmay@dtn.brc.berkeley.edu</span></code></pre></div>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a><span class="fu">ssh</span> u6049165@dtn05.chpc.utah.edu</span></code></pre></div>
 </div>
 <div id="data-transfer-with-rclone-6" class="slide section level1">
 <h1>Data transfer with <code>rclone</code></h1>
@@ -1154,20 +1174,20 @@ storage locations.</p>
 <p>Now, I can use <code>rclone</code> to synchronize files between
 storage locations.</p>
 <p>To transfer a file from my local machine to BOX, I do this:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a><span class="ex">rclone</span> sync data/ MY_BOX:CHPC_workflow/data</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a><span class="ex">rclone</span> sync data/ BOX_USU:chpc_workflow/data/</span></code></pre></div>
 </div>
 <div id="data-transfer-with-rclone-8" class="slide section level1">
 <h1>Data transfer with <code>rclone</code></h1>
 <p>Now, I can use <code>rclone</code> to synchronize files between
 storage locations.</p>
 <p>To transfer a file from my local machine to BOX, I do this:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="ex">rclone</span> sync data/ MY_BOX:CHPC_workflow/data</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="ex">rclone</span> sync data/ BOX_USU:chpc_workflow/data/</span></code></pre></div>
 <p>The first argument (<code>sync</code>) means the remote files will
 only be updated if they’re out of date!</p>
 <p>The second argument (<code>data/</code>) is the file (or directories)
 I want to send to the remote.</p>
-<p>The third (<code>MY_BOX:CHPC_workflow/data</code>) is the destination
-on BOX.</p>
+<p>The third (<code>BOX_USU:chpc_workflow/data/</code>) is the
+destination on BOX.</p>
 </div>
 <div id="data-transfer-with-rclone-9" class="slide section level1">
 <h1>Data transfer with <code>rclone</code></h1>
