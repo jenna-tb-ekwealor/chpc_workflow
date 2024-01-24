@@ -13,9 +13,10 @@
 #
 # ----------------Your Commands------------------- #
 #
+
 # change to user directory
 old_dir=$(pwd)
-cd /scratch/general/nfs1/u6049165/chpc_workflow/simple/
+cd /scratch/general/nfs1/u6049165/chpc_workflow/multiple/
 
 # make the output directory
 mkdir -p output
