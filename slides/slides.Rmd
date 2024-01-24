@@ -428,7 +428,7 @@ I'm going to use `rsync` to transfer my data file, and return to _automating_ th
 
 On my **local machine**, I use ``rsync`` like so, to send my file to CHPC:
 ```{r, engine = 'bash', eval = FALSE}
-rsync -a data/big_data.zip u6049165@dtn05.chpc.utah.edu:/scratch/general/nfs1/u6049165/chpc_workflow/data
+rsync -a data/big_data.zip u6049165@dtn05.chpc.utah.edu:/scratch/general/nfs1/u6049165/chpc_workflow/data/
 ```
 (Another option is to use a file transer GUI like FileZilla or CyberDuck but we're not covering that today.)
 
@@ -440,7 +440,7 @@ I'm going to use `rsync` to transfer my data file, and return to _automating_ th
 
 On my **local machine**, I use ``rsync`` like so, to send my file to CHPC:
 ```{r, engine = 'bash', eval = FALSE}
-rsync -a data/big_data.zip u6049165@dtn05.chpc.utah.edu:/scratch/general/nfs1/u6049165/chpc_workflow/data
+rsync -a data/big_data.zip u6049165@dtn05.chpc.utah.edu:/scratch/general/nfs1/u6049165/chpc_workflow/data/
 ```
 
 **NOTE:**
@@ -490,18 +490,24 @@ Sometimes you may sit in the queue for a while (in my experience, up to a day if
 Here is what a `SLURM` script looks like:
 ```{r, engine = 'bash', eval = FALSE}
 #!/bin/bash
-#SBATCH --partition=CHPC
-#SBATCH --account=fc_rothfelslab
-#SBATCH --qos=CHPC_normal
-#SBATCH --job-name=simple_example
-#SBATCH --mail-user=mikeryanmay@gmail.edu
-#SBATCH --mail-type=ALL
+#SBATCH
+#SBATCH --time=00:10:00
 #SBATCH --nodes=1
-#SBATCH --time=00:00:30
+# additional information for allocated clusters
+#SBATCH --account=rothfels
+#SBATCH --partition=notchpeak
+#SBATCH --mail-type=FAIL,BEGIN,END
+#
+#
+# ----------------Modules------------------------- #
+#
+#
+# ----------------Your Commands------------------- #
+#
 
-# change to user directory
+# change to user directory of choice
 old_dir=$(pwd)
-cd /global/scratch/users/$USER/chpc_workflow/simple/
+cd /scratch/general/nfs1/u6049165/chpc_workflow/simple/
 
 # make the output directory
 mkdir -p output
@@ -536,7 +542,7 @@ When you request one compute node, you get charged for all 20 cores on that node
 
 The amount you get charged is nodes x cores x how long the job ran (not how much time you requested).
 
-So, you want to either: 1) use all the cores for a given job, or 2) run multiple jobs simultaneously.
+So, you want to either: (1) use all the cores for a given job, or (2) run multiple jobs simultaneously.
 
 # Running jobs on CHPC
 
@@ -643,7 +649,7 @@ Now, I can use `rclone` to synchronize files between storage locations.
 
 To transfer a file from my local machine to BOX, I do this:
 ```{r, engine = 'bash', eval = FALSE}
-rclone sync data/ MY_BOX:chpc_workflow/data
+rclone sync data/ MY_BOX:chpc_workflow/data/
 ```
 
 # Data transfer with `rclone`
@@ -652,14 +658,14 @@ Now, I can use `rclone` to synchronize files between storage locations.
 
 To transfer a file from my local machine to BOX, I do this:
 ```{r, engine = 'bash', eval = FALSE}
-rclone sync data/ MY_BOX:chpc_workflow/data
+rclone sync data/ MY_BOX:chpc_workflow/data/
 ```
 
 The first argument (`sync`) means the remote files will only be updated if they're out of date!
 
 The second argument (`data/`) is the file (or directories) I want to send to the remote.
 
-The third (`MY_BOX:chpc_workflow/data`) is the destination on BOX.
+The third (`MY_BOX:chpc_workflow/data/`) is the destination on BOX.
 
 # Data transfer with `rclone`
 
