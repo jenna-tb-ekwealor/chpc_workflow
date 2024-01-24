@@ -1,3 +1,3 @@
 # README
 
-A (hopefully simple and practical) git/savio/box workflow.
+A (hopefully simple and practical) git/CHPC/box workflow.

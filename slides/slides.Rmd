@@ -1,6 +1,6 @@
 ---
 title: "Repo and Node"
-subtitle: Mike's idiosyncratic savio habits
+subtitle: Tips and Tricks for Cluster workk
 output:
   slidy_presentation:
     incremental: no
@@ -8,21 +8,21 @@ output:
     highlight: pygments
 ---
 
-# Software Prerequisites
+# Software Prerequisites (on local machine)
 
-# Software Prerequisites
+# Software Prerequisites (on local machine)
 	
 - **git** for data transfer (scripts and small files)
   - should come installed by default on macOS
 
-# Software Prerequisites
+# Software Prerequisites (on local machine)
 	
 - **git** for data transfer (scripts and small files)
   - should come installed by default on macOS
 - **homebrew** for installing software locally
   - https://brew.sh/
 
-# Software Prerequisites
+# Software Prerequisites (on local machine)
 	
 - **git** for data transfer (scripts and small files)
   - should come installed by default on macOS
@@ -33,7 +33,22 @@ output:
 brew install rsync
 ```
 
-# Software Prerequisites
+# Software Prerequisites (on local machine)
+	
+- **git** for data transfer (scripts and small files)
+  - should come installed by default on macOS
+- **homebrew** for installing software locally
+  - https://brew.sh/
+- **rsync** for data transfer (large files) between savio and your computer
+```{r, engine = 'bash', eval = FALSE}
+brew install rsync
+```
+- **rclone** for data transfer (large files) between savio, BOX, and your computer
+```{r, engine = 'bash', eval = FALSE}
+brew install rclone
+```
+
+# Software Prerequisites (on local machine)
 	
 - **git** for data transfer (scripts and small files)
   - should come installed by default on macOS
@@ -48,26 +63,9 @@ brew install rsync
 brew install rclone
 ```
 
-# Software Prerequisites
-	
-- **git** for data transfer (scripts and small files)
-  - should come installed by default on macOS
-- **homebrew** for installing software locally
-  - https://brew.sh/
-- **rsync** for data transfer (large files) between savio and your computer
-```{r, engine = 'bash', eval = FALSE}
-brew install rsync
-```
-- **rclone** for data transfer (large files) between savio, BOX, and your computer
-```{r, engine = 'bash', eval = FALSE}
-brew install rclone
-```
-- (smartphone) **Google Authenticator** for logging in to savio with one-time passwords
-  - https://docs-research-it.berkeley.edu/services/high-performance-computing/user-guide/setting-otp/
+# Introduction to CHPC
 
-# Introduction to savio
-
-# Introduction to savio
+# Introduction to CHPC
 
 <p align="center">
   <img src="figures/overview.svg" style="width:auto;max-width:200%">
@@ -75,7 +73,7 @@ brew install rclone
 
 There are two types of things you need to worry about: **nodes** and **file systems** (hard drives).
 
-# Introduction to savio
+# Introduction to CHPC
 
 <p align="center">
   <img src="figures/overview.svg" style="width:auto;max-width:200%">
@@ -84,39 +82,39 @@ There are two types of things you need to worry about: **nodes** and **file syst
 **Nodes** are self-contained computers.
 They come in three varieties.
 
-# Introduction to savio
+# Introduction to CHPC
 
 <p align="center">
-  <img src="figures/login_node.svg" style="width:auto;max-width:200%">
+  <img src="figures/login_node.png" style="width:auto;max-width:200%">
 </p>
 
 **Login nodes** (AKA **head nodes**) are where you login!
 This is also where you submit jobs.
 
-_**NEVER**_ run serious programs here.
+_**NEVER**_ run serious programs here. Even moving or copying large files can be a problem (more on that later). 
 
-# Introduction to savio
+# Introduction to CHPC
 
 <p align="center">
-  <img src="figures/compute_node.svg" style="width:auto;max-width:200%">
+  <img src="figures/compute_node.png" style="width:auto;max-width:200%">
 </p>
 
 **Compute nodes** are where your jobs are executed.
 
-You should not log in to a compute node (unless you're doing an interactive job...).
+You should generally not log in to a compute node (unless you're doing an interactive job...).
 Jobs you submit on a login node are assigned to a compute node by the system.
 
-# Introduction to savio
+# Introduction to CHPC
 
 <p align="center">
-  <img src="figures/data_node.svg" style="width:auto;max-width:200%">
+  <img src="figures/data_node.png" style="width:auto;max-width:200%">
 </p>
 
-The **data transfer node** is where you login when you want to move large data files to and from savio.
+The **data transfer node** is where you login when you want to move large data files to and from CHPC
 
-I try to avoid logging into transfer nodes, and instead write scripts to move data back and forth.
+I try to avoid logging into transfer nodes, and instead write scripts to move data back and forth. 
 
-# Introduction to savio
+# Introduction to CHPC
 
 <p align="center">
   <img src="figures/overview.svg" style="width:auto;max-width:200%">
@@ -124,7 +122,7 @@ I try to avoid logging into transfer nodes, and instead write scripts to move da
 
 There are two file systems (basically, sets of hard drives).
 
-# Introduction to savio
+# Introduction to CHPC
 
 <p align="center">
   <img src="figures/nfs.svg" style="width:auto;max-width:200%">
@@ -132,11 +130,10 @@ There are two file systems (basically, sets of hard drives).
 
 There are two file systems (basically, sets of hard drives).
 
-**NFS** is where your _home_ directory (`~`) is.
-You are limited to 10 gb in our home directory, so avoid storing large data files here.
-I typically use it for installing programs.
+In your _home_ directory (`~`) you are limited to 50 GB of space, but the data are not backed up!
+This is the location you will want to intstall programs (if needed).
 
-# Introduction to savio
+# Introduction to CHPC
 
 <p align="center">
   <img src="figures/scratch.svg" style="width:auto;max-width:200%">
@@ -144,12 +141,14 @@ I typically use it for installing programs.
 
 There are two file systems (basically, sets of hard drives).
 
-**Lustre** is where all of your jobs should live.
-Each user has a `scratch` directory here, with essentially unlimited space.
-However, it's supposed to be swept every so often to delete "stale" files.
-(They warn you before they do this, and are usually pretty lax.)
+**scratch** is where all of your jobs should live. Within `/scratch/` there are two file systems:
+* `/scratch/general/nfs1` - a 595 TB NFS system accessible from all general environment CHPC resources 
+* `/scratch/general/vast` - 1 PB  file system available from all general environment CHPC resources; quota of 50 TB per user
 
-# Introduction to savio
+Each user can make their own `scratch` directory here, with essentially unlimited space (essentially!).
+However, there is a strict purging policy. **Files that have not been accessed for 60 days are automatically scrubbed!** These files are also not backed up.
+
+# Introduction to CHPC
 
 <p align="center">
   <img src="figures/scratch.svg" style="width:auto;max-width:200%">
@@ -159,20 +158,30 @@ There are two file systems (basically, sets of hard drives).
 
 To get to your `scratch` directory (either in a login node, or on a compute node), use:
 ```{r, engine = 'bash', eval = FALSE}
-cd /global/scratch/users/<YOUR USER NAME>
+cd /scratch/general/nfs1>
 ```
+or
+```{r, engine = 'bash', eval = FALSE}
+cd /scratch/general/vast>
+```
+then create a directory for yourself with:
+```{r, engine = 'bash', eval = FALSE}
+mkir my_username>
+```
+Note that everyone will be able to see your directory name in the list but they won't be able to access the contents, unless you specifically give access to them. 
 
-# Introduction to savio
+# Introduction to CHPC
 
-Each IB faculty gets 300,000 CPU (core) hours per year. (A "faculty computing allowance", or FCA.)
+Each USU faculty account can request up to 300,000 CPU (core) hours per quarter (For the "normal allocation request.") You will have to submit a request form 1-4 times per year and justify your allocation amount. 
 
-# Introduction to savio
+# Introduction to CHPC
 
-Each IB faculty gets 300,000 CPU (core) hours per year. (A "faculty computing allowance", or FCA.)
+Each USU faculty account can request up to 300,000 CPU (core) hours per quarter (For the "normal allocation request.") You will have to submit a request form 1-4 times per year and justify your allocation amount. 
+
 
 It seems like a lot, but you'd be surprised how fast they disappear!
 
-# Introduction to savio
+# Introduction to CHPC
 
 Each IB faculty gets 300,000 CPU (core) hours per year. (A "faculty computing allowance", or FCA.)
 
@@ -180,7 +189,7 @@ It seems like a lot, but you'd be surprised how fast they disappear!
 
 **IMPORTANT:** When you request a node, _you are charged for all the cores on that node whether or not you use them!_ We'll return to this later.
 
-# Introduction to savio
+# Introduction to CHPC
 
 Each IB faculty gets 300,000 CPU (core) hours per year. (A "faculty computing allowance", or FCA.)
 
@@ -190,13 +199,13 @@ It seems like a lot, but you'd be surprised how fast they disappear!
 
 If you haven't already, request an account and get added to Carl (or another PI's) allowance [HERE](https://docs-research-it.berkeley.edu/services/high-performance-computing/getting-account/#getting-access-to-a-project).
 
-# Introduction to savio
+# Introduction to CHPC
 
-savio uses "modules" for pre-installed programs.
+CHPC uses "modules" for pre-installed programs.
 
-# Introduction to savio
+# Introduction to CHPC
 
-savio uses "modules" for pre-installed programs.
+CHPC uses "modules" for pre-installed programs.
 
 To load a module (make the program available for use), do something like:
 ```{r, engine = 'bash', eval = FALSE}
@@ -204,9 +213,9 @@ module load revbayes
 ```
 (Rememeber to do this in any `SLURM` scripts that use the programs, too.)
 
-# Introduction to savio
+# Introduction to CHPC
 
-savio uses "modules" for pre-installed programs.
+CHPC uses "modules" for pre-installed programs.
 
 To load a module (make the program available for use), do something like:
 ```{r, engine = 'bash', eval = FALSE}
@@ -219,18 +228,21 @@ You can see the list of available modules using:
 module avail
 ```
 
-# Introduction to savio
+You can search for a particular modlule with a keyword, for example "`iqtree`," like so:
+```{r, engine = 'bash', eval = FALSE}
+module spider iqtree
+```
+
+# Introduction to CHPC
 
 - Online resources:
-  - [introduction to HPC/savio](https://docs-research-it.berkeley.edu/services/high-performance-computing/overview/)
-  - [system overview](https://docs-research-it.berkeley.edu/services/high-performance-computing/overview/system-overview/)
-  - [data storage](https://docs-research-it.berkeley.edu/services/high-performance-computing/user-guide/data/storing-data/)
-  - [account setup](https://docs-research-it.berkeley.edu/services/high-performance-computing/getting-account/#getting-access-to-a-project)
-  - [user guide](https://docs-research-it.berkeley.edu/services/high-performance-computing/user-guide/)
+  - [CHPC Getting Started Guide](https://www.chpc.utah.edu/documentation/gettingstarted.php)
+  - [Access Overview](https://www.chpc.utah.edu/resources/access.php)
+  - [Allocation Information](https://www.chpc.utah.edu/userservices/allocations.php)
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 <p align="center">
   <img src="figures/workflow_6.svg" style="width:auto;max-width:200%">
@@ -238,7 +250,7 @@ module avail
 
 There are four systems involved.
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 <p align="center">
   <img src="figures/workflow_5.svg" style="width:auto;max-width:200%">
@@ -248,7 +260,7 @@ Two of them are "temporary" (my local machine, and savio)---these may get lost o
 
 The other two are "archives" (git and BOX)---these should stay around forever!
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 <p align="center">
   <img src="figures/workflow_4.svg" style="width:auto;max-width:200%">
@@ -256,7 +268,7 @@ The other two are "archives" (git and BOX)---these should stay around forever!
 
 I use different methods to transfer small files (tracked in the repo) and large files (stored in BOX).
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 <p align="center">
   <img src="figures/workflow_3.svg" style="width:auto;max-width:200%">
@@ -265,7 +277,7 @@ I use different methods to transfer small files (tracked in the repo) and large 
 I track all my small files using a git repository.
 Then I use push and pull (/clone) to synchronize savio with my local repository.
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 <p align="center">
   <img src="figures/workflow_2.svg" style="width:auto;max-width:200%">
@@ -274,7 +286,7 @@ Then I use push and pull (/clone) to synchronize savio with my local repository.
 I use `rclone` to transfer large files to savio.
 (You can also use `Globus`, `sftp`, `lftp`, `scp`, etc. I like `rclone`)
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 <p align="center">
   <img src="figures/workflow_2.svg" style="width:auto;max-width:200%">
@@ -282,7 +294,7 @@ I use `rclone` to transfer large files to savio.
 
 I have one set of `rclone` scripts that transfer data from my local machine to BOX, then from BOX to savio.
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 <p align="center">
   <img src="figures/workflow_1.svg" style="width:auto;max-width:200%">
@@ -292,7 +304,7 @@ I have one set of `rclone` scripts that transfer data from my local machine to B
 
 And another set to transfer from savio to BOX, then from BOX to my local machine (if necessary).
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 Imagine I'm working with a git repository.
 
@@ -302,7 +314,7 @@ I may clone or create a repo on my local machine.
 git clone https://mrmay@bitbucket.org/mrmay/savio_workflow.git
 ```
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 I make some local changes, stage and commit them, and then push them to the remote.
 
@@ -313,20 +325,20 @@ git pull
 git push
 ```
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
-Now I want to get those changes onto savio.
+Now I want to get those changes onto CHPC
 
-I log into savio, and navigate to my scratch directory
+I log into CHPC, and navigate to my scratch directory
 ```{r, engine = 'bash', eval = FALSE}
-# log in to savio
-ssh mrmay@hpc.brc.berkeley.edu
+# log in to CHPC, for instance notchpeak
+ssh u6049165@notchpeak.chpc.utah.edu
 
 # change to my scratch directory
 cd /global/scratch/users/mrmay
 ```
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 If this is the first time using the repo with savio, I clone the repo:
 ```{r, engine = 'bash', eval = FALSE}
@@ -337,7 +349,7 @@ git clone https://mrmay@bitbucket.org/mrmay/savio_workflow.git
 cd savio_workflow
 ```
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 If this is the first time using the repo with savio, I clone the repo:
 ```{r, engine = 'bash', eval = FALSE}
@@ -357,11 +369,11 @@ cd savio_workflow
 git pull
 ```
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 But how do I transfer big data files?
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 But how do I transfer big data files?
 
@@ -373,7 +385,7 @@ If I have a big file (e.g. a big sequence alignment), I put it somewhere in my *
 touch data/big_data.zip
 ```
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 But how do I transfer big data files?
 
@@ -394,17 +406,17 @@ and add ``data/big_data.zip``, then save and close.
 
 (Remember to stage/commit/push changes to your `.gitignore`.)
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 A nice, scriptable solution for moving individual files is ``rsync``.
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 A nice, scriptable solution for moving individual files is ``rsync``.
 
 I'm going to use `rsync` to transfer my data file, and return to _automating_ this for large data files later, when I talk about `rclone`.
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 A nice, scriptable solution for moving individual files is ``rsync``.
 
@@ -415,7 +427,7 @@ On my **local machine**, I use ``rsync`` like so, to send my file to savio:
 rsync -a data/big_data.zip mrmay@dtn.brc.berkeley.edu:/global/scratch/users/mrmay/savio_workflow/data
 ```
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 A nice, scriptable solution for moving individual files is ``rsync``.
 
@@ -432,7 +444,7 @@ rsync -a data/big_data.zip mrmay@dtn.brc.berkeley.edu:/global/scratch/users/mrma
 - `-a` is "archive" mode: it only updates the remote file if it's changed.
 - The first argument is the _relative path to the file I want to transfer_, and the second argument is the _absolute path to the directory I want to move the file to_.
 
-# git, savio, and data transfer
+# git, CHPC, and data transfer
 
 Just to make sure the file transferred, on **savio**:
 ```{r, engine = 'bash', eval = FALSE}
