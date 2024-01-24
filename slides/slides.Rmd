@@ -14,11 +14,13 @@ output:
 	
 - **git** for data transfer (scripts and small files)
   - should come installed by default on macOS
+- **GitHub Desktop** (optional but it's nice so I recommend it)
 
 # Software Prerequisites (on local machine)
 	
 - **git** for data transfer (scripts and small files)
   - should come installed by default on macOS
+- **GitHub Desktop** (optional but it's nice so I recommend it)
 - **homebrew** for installing software locally
   - https://brew.sh/
 
@@ -26,6 +28,7 @@ output:
 	
 - **git** for data transfer (scripts and small files)
   - should come installed by default on macOS
+- **GitHub Desktop** (optional but it's nice so I recommend it)
 - **homebrew** for installing software locally
   - https://brew.sh/
 - **rsync** for data transfer (large files) between CHPC and your computer
@@ -37,6 +40,7 @@ brew install rsync
 	
 - **git** for data transfer (scripts and small files)
   - should come installed by default on macOS
+- **GitHub Desktop** (optional but it's nice so I recommend it)
 - **homebrew** for installing software locally
   - https://brew.sh/
 - **rsync** for data transfer (large files) between CHPC and your computer
@@ -52,6 +56,7 @@ brew install rclone
 	
 - **git** for data transfer (scripts and small files)
   - should come installed by default on macOS
+- **GitHub Desktop** (optional but it's nice so I recommend it)
 - **homebrew** for installing software locally
   - https://brew.sh/
 - **rsync** for data transfer (large files) between CHPC and your computer
@@ -166,7 +171,7 @@ cd /scratch/general/vast
 ```
 then create a directory for yourself with:
 ```{r, engine = 'bash', eval = FALSE}
-mkdir u6049165
+mkdir u6049165 
 ```
 Note that everyone will be able to see your directory name in the list but they won't be able to access the contents, unless you specifically give access to them. 
 
@@ -310,6 +315,7 @@ Imagine I'm working with a git repository.
 I may clone or create a repo on my local machine.
 
 ```{r, engine = 'bash', eval = FALSE}
+git clone https://github.com/jenna-tb-ekwealor/chpc_workflow.git
 ```
 
 # git, CHPC, and data transfer
@@ -317,7 +323,7 @@ I may clone or create a repo on my local machine.
 I make some local changes, stage and commit them, and then push them to the remote.
 
 ```{r, engine = 'bash', eval = FALSE}
-git stage .
+git add .
 git commit -m "some new changes!"
 git pull
 git push
@@ -333,6 +339,7 @@ I log into CHPC, and navigate to my scratch directory
 ssh u6049165@notchpeak.chpc.utah.edu
 
 # change to my scratch directory
+cd /scratch/general/nfs1/u6049165
 ```
 
 # git, CHPC, and data transfer
@@ -343,7 +350,7 @@ If this is the first time using the repo with CHPC, I clone the repo:
 git clone https://github.com/jenna-tb-ekwealor/chpc_workflow.git
 
 # change to that directory
-cd CHPC_workflow
+cd chpc_workflow
 ```
 
 # git, CHPC, and data transfer
@@ -351,16 +358,16 @@ cd CHPC_workflow
 If this is the first time using the repo with CHPC, I clone the repo:
 ```{r, engine = 'bash', eval = FALSE}
 # clone
-git clone https://mrmay@bitbucket.org/mrmay/CHPC_workflow.git
+git clone https://github.com/jenna-tb-ekwealor/chpc_workflow.git
 
 # change to that directory
-cd CHPC_workflow
+cd chpc_workflow
 ```
 
 Otherwise, I navigate to the repo and pull my new changes
 ```{r, engine = 'bash', eval = FALSE}
 # change to that directory
-cd CHPC_workflow
+cd chpc_workflow
 
 # pull
 git pull
@@ -421,7 +428,7 @@ I'm going to use `rsync` to transfer my data file, and return to _automating_ th
 
 On my **local machine**, I use ``rsync`` like so, to send my file to CHPC:
 ```{r, engine = 'bash', eval = FALSE}
-rsync -a data/big_data.zip mrmay@dtn.brc.berkeley.edu:/global/scratch/users/mrmay/CHPC_workflow/data
+rsync -a data/big_data.zip u6049165@dtn05.chpc.utah.edu:/global/scratch/users/mrmay/chpc_workflow/data
 ```
 
 # git, CHPC, and data transfer
@@ -432,12 +439,12 @@ I'm going to use `rsync` to transfer my data file, and return to _automating_ th
 
 On my **local machine**, I use ``rsync`` like so, to send my file to CHPC:
 ```{r, engine = 'bash', eval = FALSE}
-rsync -a data/big_data.zip mrmay@dtn.brc.berkeley.edu:/global/scratch/users/mrmay/CHPC_workflow/data
+rsync -a data/big_data.zip u6049165@dtn05.chpc.utah.edu:/global/scratch/users/mrmay/chpc_workflow/data
 ```
 
 **NOTE:**
 
-- _**I'm using the data transfer node!**_
+- _**I'm using the data transfer node!**_ See more about those [here](https://www.chpc.utah.edu/documentation/data_services.php#Data_Transfer_Nodes).
 - `-a` is "archive" mode: it only updates the remote file if it's changed.
 - The first argument is the _relative path to the file I want to transfer_, and the second argument is the _absolute path to the directory I want to move the file to_.
 
@@ -493,7 +500,7 @@ Here is what a `SLURM` script looks like:
 
 # change to user directory
 old_dir=$(pwd)
-cd /global/scratch/users/$USER/CHPC_workflow/simple/
+cd /global/scratch/users/$USER/chpc_workflow/simple/
 
 # make the output directory
 mkdir -p output
@@ -635,7 +642,7 @@ Now, I can use `rclone` to synchronize files between storage locations.
 
 To transfer a file from my local machine to BOX, I do this:
 ```{r, engine = 'bash', eval = FALSE}
-rclone sync data/ MY_BOX:CHPC_workflow/data
+rclone sync data/ MY_BOX:chpc_workflow/data
 ```
 
 # Data transfer with `rclone`
@@ -644,14 +651,14 @@ Now, I can use `rclone` to synchronize files between storage locations.
 
 To transfer a file from my local machine to BOX, I do this:
 ```{r, engine = 'bash', eval = FALSE}
-rclone sync data/ MY_BOX:CHPC_workflow/data
+rclone sync data/ MY_BOX:chpc_workflow/data
 ```
 
 The first argument (`sync`) means the remote files will only be updated if they're out of date!
 
 The second argument (`data/`) is the file (or directories) I want to send to the remote.
 
-The third (`MY_BOX:CHPC_workflow/data`) is the destination on BOX.
+The third (`MY_BOX:chpc_workflow/data`) is the destination on BOX.
 
 # Data transfer with `rclone`
 
