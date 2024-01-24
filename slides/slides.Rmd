@@ -428,8 +428,9 @@ I'm going to use `rsync` to transfer my data file, and return to _automating_ th
 
 On my **local machine**, I use ``rsync`` like so, to send my file to CHPC:
 ```{r, engine = 'bash', eval = FALSE}
-rsync -a data/big_data.zip u6049165@dtn05.chpc.utah.edu:/global/scratch/users/mrmay/chpc_workflow/data
+rsync -a data/big_data.zip u6049165@dtn05.chpc.utah.edu:/scratch/general/nfs1/u6049165/chpc_workflow/data
 ```
+(Another option is to use a file transer GUI like FileZilla or CyberDuck but we're not covering that today.)
 
 # git, CHPC, and data transfer
 
@@ -439,7 +440,7 @@ I'm going to use `rsync` to transfer my data file, and return to _automating_ th
 
 On my **local machine**, I use ``rsync`` like so, to send my file to CHPC:
 ```{r, engine = 'bash', eval = FALSE}
-rsync -a data/big_data.zip u6049165@dtn05.chpc.utah.edu:/global/scratch/users/mrmay/chpc_workflow/data
+rsync -a data/big_data.zip u6049165@dtn05.chpc.utah.edu:/scratch/general/nfs1/u6049165/chpc_workflow/data
 ```
 
 **NOTE:**
