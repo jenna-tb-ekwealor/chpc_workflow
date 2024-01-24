@@ -2,17 +2,20 @@
 title: "Repo and Node"
 subtitle: A Reproducibility Workflow  + Tips and Tricks for the Cluster
 output:
-  beamer_presentation:
-    incremental: no
-    highlight: pygments
-  ioslides_presentation:
-    incremental: no
-    highlight: pygments
   slidy_presentation:
     incremental: no
     font_adjustment: -2
     highlight: pygments
+  ioslides_presentation:
+    incremental: no
+    highlight: pygments
+  beamer_presentation:
+    incremental: no
+    highlight: pygments
 ---
+# Credit
+
+Original tutorial by Michael R. May, further modified by Jenna T. B. Ekwealor
 
 # Software Prerequisites (on local machine)
 
