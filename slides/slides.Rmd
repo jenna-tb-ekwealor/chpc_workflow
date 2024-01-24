@@ -698,7 +698,7 @@ bash synchronizers/synchronize_CHPC_to_box.sh
 - This is just one example of a workflow: you could use `rclone` to transfer ALL of your files, and not use git! Or, you could use something other than `rclone` for file transfer, like `Globus` or `lftp`.
 
 
-# NOW FOR SOME TIPS AND TRICKS!
+# NOW FOR SOME TIPS AND TRICKS! Aliases
 
 Aliases
 - Do you, too, have trouble remembering your uNID? You don't have to memorize it anymore! You can create aliases for this and other things in your cluster. Let's create a file called `.aliases` in our home directory. 
@@ -719,13 +719,13 @@ alias scratch='cd /scratch/general/vast/u6049165/'
 You can do this on your local machine, too, so that you can just e.g. type `notchpeak` for `ssh u6049165@notchpeak.chpc.utah.edu`!
 
 
-# NOW FOR SOME TIPS AND TRICKS!
+# NOW FOR SOME TIPS AND TRICKS! Parameters file
 
 - Say one day you're working on notchpeak, and the next day you want to re-run some scripts and notchpeak is down so you log into lonepeak instead. You'll recall your script had `#SBATCH --partition=notchpeak` at the top. 
 - Try running your script again and it will immediately fail! You'll have to edit it and change it to `lonepeak`. When you're running and re-running a lot of jobs, or the same jobs on different datasets, this can get tedious. 
 - I have partially resolved this tediousness with a `parameters.sh` file. 
 
-# NOW FOR SOME TIPS AND TRICKS!
+# NOW FOR SOME TIPS AND TRICKS! Parameters file
 
 
 In the same directory that you keep your jobs, create a `parameters.sh` file.
@@ -738,7 +738,6 @@ Add this to it:
 # Cluster settings
 # Partition must be specified on each job script but may be able to set here
 SBATCH_PARTITION="notchpeak"
-SBATCH_ACCOUNT="rothfels"
 ```
 
 From now on, in all your job scripts, start like this:
@@ -750,11 +749,158 @@ source parameters.sh # load parameters
 #SBATCH --nodes=1
 #SBATCH --ntasks=8    # number of MPI tasks
 # additional information for allocated clusters
-#SBATCH --account=$SBATCH_ACCOUNT     # account
+#SBATCH --account=rothfels
 #SBATCH --partition=$SBATCH_PARTITION  # partition
 
 ... etc
 ```
-You'll see that you call the parameter now as a variable with **`$SBATCH_ACCOUNT`** e.g.
+You'll see that you call the parameter now as a variable with **`$SBATCH_PARTITION`** e.g.
 
+
+# NOW FOR SOME TIPS AND TRICKS! Parameters file
+
+- I do the same thing for account. Though I am only using one account, I find this makes the scripts more share-able. I could now share them as is and they would not have my personal account info in them AND the user would not have to chance a million scripts to have their own account name; they'd only have to change the one parameters file. 
+
+```{r, engine = 'bash', eval = FALSE}
+# Cluster settings
+# Partition must be specified on each job script but may be able to set here
+SBATCH_ACCOUNT="rothfels"
+```
+
+Likewise I use `parameters.sh` for all sorts of personalization things that can be more generic in scripts. For example: 
+
+```{r, engine = 'bash', eval = FALSE}
+# Raw read filename details below
+# Raw read filename extension
+RAW_READS_EXT="fastq.gz"
+# Raw read filename prefix
+RAW_READS_PRE="RAPiD-Genomics"
+# Sample prefix
+SAMPLE_PRE="UFG"
+# Locus prefix
+LOCUS_PRE="L"
+# Locus extension
+LOCUS_EXT=".fa"
+```
+
+
+# NOW FOR SOME TIPS AND TRICKS! Parameters file
+
+You can continue this `parameters.sh` to include any parameters for specific jobs/tools, too. e.g. I included the cleaning parameters here:
+```{r, engine = 'bash', eval = FALSE}
+# Cleaning parameters (trimmomatic)
+LEADING=3
+TRAILING=3
+SLIDINGWINDOW_LENGTH=4
+SLIDINGWINDOW_SCORE=20
+MINLEN=51 
+```
+
+The idea is that other users (or future me) would not have to dig around into the scripts so much to make tweaks. 
+
+# NOW FOR SOME TIPS AND TRICKS! Automate repetitive job submission
+
+- Have you ever wanted to run the SAME tool on a bunch of different input files? An example that comes up for me often is building gene trees! I want all the trees to use the same `IQTREE` script, and I have 400 alignments. 
+
+One option is to run a single job that applies the `IQTREE` command to each alignment sequentially. This would *work* (and I used to do it a lot myself, so no shame!), but it's needlessly slow because there is no reason they can't run at the same time. Some tools have parallelization built in, but it's not always clear which do and which do not, and how to know. 
+
+- My favorite way to solve this problem is to run 1 job per alignment. Whoa, that's a lot of job scripts to make! Yes, it is, but we can automate it. 
+
+# NOW FOR SOME TIPS AND TRICKS! Automate repetitive job submission
+We are going to create some fake data files on the cluster. Make sure you are in **`chpc_workflow`** for this. 
+
+```{r, engine = 'bash', eval = FALSE}
+touch data/aln_{100..110}.fa
+```
+Use `ls data` to see what we've created!
+
+Now let's create an empty job script on our **local machine** in the `chpc_workflow` directory. 
+
+```{r, engine = 'bash', eval = FALSE}
+nano iqtree.job
+```
+
+And here's some stuff to put at the top for now:
+
+```{r, engine = 'bash', eval = FALSE}
+#!/bin/bash
+#SBATCH --time=0:10:00
+#SBATCH --nodes=1
+# additional information for allocated clusters
+#SBATCH --account=rothfels
+#SBATCH --partition=notchpeak
+#SBATCH --mail-type=FAIL,BEGIN,END
+#
+# ----------------Modules------------------------- #
+#
+module load iqtree/2.2.2.4
+#
+# ----------------Your Commands------------------- #
+#
+# iqtree command for building a gene tree will go here
+```
+
+
+# NOW FOR SOME TIPS AND TRICKS! Automate repetitive job submission
+- This job script is not done yet, but we know we wll want to run this script for each one of the alignments in `data/.`
+
+- Let's create a **bash** script that will submit those jobs. 
+
+```{r, engine = 'bash', eval = FALSE}
+nano submit_gene_trees.sh
+```
+
+And here is what we'll put in it:
+
+```{r, engine = 'bash', eval = FALSE}
+# /bin/sh
+mkdir -p gene_trees # make a directory for the output 
+
+for fasta in data/aln*.fa; do
+	sbatch iqtree.job $fasta # submit the job for each alignment
+done
+```
+
+For each alignment, submit a job. Now, we have to include some special stuff in our job script!
+
+# NOW FOR SOME TIPS AND TRICKS! Automate repetitive job submission
+- Return to the job script with:
+
+```{r, engine = 'bash', eval = FALSE}
+nano iqtree.job
+```
+
+```{r, engine = 'bash', eval = FALSE}
+# build gene tree
+iqtree2 -s "$1"
+```
+**Note!** instead of the actual alignment filename, I'm using "$1"! This will get replaced by the `$fasta` variable in the `submit_gene_trees.sh` job submission script, one for each alignment (or for each version of the `$fasta` variable).
+
+Now run 
+```{r, engine = 'bash', eval = FALSE}
+bash submit_gene_trees.sh
+```
+And it will submit a job per alignment.
+
+# NOW FOR SOME TIPS AND TRICKS! Automate repetitive job submission
+- This can get even fancier! You can use the command `basename` to do all sorts of renaming type stuff. For example your `submit_gene_trees.sh` could be like this:
+
+```{r, engine = 'bash', eval = FALSE}
+# /bin/sh
+mkdir -p gene_trees # make a directory for the output 
+
+for fasta in data/aln*.fa; do
+	locusid=$(basename "$fasta" .fa) # grab the filename without the extension
+	echo 'the locus is' "$locusid" # for troubleshooting
+	sbatch ../../scripts/_02a_build_gene_trees.job $locusid
+done
+
+```
+Then your job script like so: 
+
+```{r, engine = 'bash', eval = FALSE}
+# build gene tree
+iqtree2 -s "$1".faa --prefix "$1"_gene_tree
+```
+And so on!
 

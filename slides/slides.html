@@ -1249,11 +1249,12 @@ e.g. type <code>notchpeak</code> for
 <li>Say one day you’re working on notchpeak, and the next day you want
 to re-run some scripts and notchpeak is down so you log into lonepeak
 instead. You’ll recall your script had
-<code>#SBATCH --partition=notchpeak</code> at the top. Try running your
-script again and it will immediately fail! You’ll have to edit it and
-change it to <code>lonepeak</code>. When you’re running and re-running a
-lot of jobs, or the same jobs on different datasets, this can get
-tedious. I have partially resolved this tediousness with a
+<code>#SBATCH --partition=notchpeak</code> at the top.</li>
+<li>Try running your script again and it will immediately fail! You’ll
+have to edit it and change it to <code>lonepeak</code>. When you’re
+running and re-running a lot of jobs, or the same jobs on different
+datasets, this can get tedious.</li>
+<li>I have partially resolved this tediousness with a
 <code>parameters.sh</code> file.</li>
 </ul>
 </div>
@@ -1265,8 +1266,7 @@ tedious. I have partially resolved this tediousness with a
 <p>Add this to it:</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="co"># Cluster settings</span></span>
 <span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a><span class="co"># Partition must be specified on each job script but may be able to set here</span></span>
-<span id="cb40-3"><a href="#cb40-3" tabindex="-1"></a><span class="va">SBATCH_PARTITION</span><span class="op">=</span><span class="st">&quot;notchpeak&quot;</span></span>
-<span id="cb40-4"><a href="#cb40-4" tabindex="-1"></a><span class="va">SBATCH_ACCOUNT</span><span class="op">=</span><span class="st">&quot;rothfels&quot;</span></span></code></pre></div>
+<span id="cb40-3"><a href="#cb40-3" tabindex="-1"></a><span class="va">SBATCH_PARTITION</span><span class="op">=</span><span class="st">&quot;notchpeak&quot;</span></span></code></pre></div>
 <p>From now on, in all your job scripts, start like this:</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a><span class="co"># Source the parameters file</span></span>
@@ -1275,12 +1275,52 @@ tedious. I have partially resolved this tediousness with a
 <span id="cb41-5"><a href="#cb41-5" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
 <span id="cb41-6"><a href="#cb41-6" tabindex="-1"></a><span class="co">#SBATCH --ntasks=8    # number of MPI tasks</span></span>
 <span id="cb41-7"><a href="#cb41-7" tabindex="-1"></a><span class="co"># additional information for allocated clusters</span></span>
-<span id="cb41-8"><a href="#cb41-8" tabindex="-1"></a><span class="co">#SBATCH --account=$SBATCH_ACCOUNT     # account</span></span>
+<span id="cb41-8"><a href="#cb41-8" tabindex="-1"></a><span class="co">#SBATCH --account=rothfels</span></span>
 <span id="cb41-9"><a href="#cb41-9" tabindex="-1"></a><span class="co">#SBATCH --partition=$SBATCH_PARTITION  # partition</span></span>
 <span id="cb41-10"><a href="#cb41-10" tabindex="-1"></a></span>
 <span id="cb41-11"><a href="#cb41-11" tabindex="-1"></a><span class="ex">...</span> etc</span></code></pre></div>
 <p>You’ll see that you call the parameter now as a variable with
-<code>$SBATCH_ACCOUNT</code> e.g.</p>
+<strong><code>$SBATCH_PARTITION</code></strong> e.g.</p>
+</div>
+<div id="now-for-some-tips-and-tricks-3" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS!</h1>
+<ul>
+<li>I do the same thing for account. Though I am only using one account,
+I find this makes the scripts more share-able. I could now share them as
+is and they would not have my personal account info in them AND the user
+would not have to chance a million scripts to have their own account
+name; they’d only have to change the one parameters file.</li>
+</ul>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a><span class="co"># Cluster settings</span></span>
+<span id="cb42-2"><a href="#cb42-2" tabindex="-1"></a><span class="co"># Partition must be specified on each job script but may be able to set here</span></span>
+<span id="cb42-3"><a href="#cb42-3" tabindex="-1"></a><span class="va">SBATCH_ACCOUNT</span><span class="op">=</span><span class="st">&quot;rothfels&quot;</span></span></code></pre></div>
+<p>Likewise I use <code>parameters.sh</code> for all sorts of
+personalization things that can be more generic in scripts. For
+example:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="co"># Raw read filename details below</span></span>
+<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a><span class="co"># Raw read filename extension</span></span>
+<span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a><span class="va">RAW_READS_EXT</span><span class="op">=</span><span class="st">&quot;fastq.gz&quot;</span></span>
+<span id="cb43-4"><a href="#cb43-4" tabindex="-1"></a><span class="co"># Raw read filename prefix</span></span>
+<span id="cb43-5"><a href="#cb43-5" tabindex="-1"></a><span class="va">RAW_READS_PRE</span><span class="op">=</span><span class="st">&quot;RAPiD-Genomics&quot;</span></span>
+<span id="cb43-6"><a href="#cb43-6" tabindex="-1"></a><span class="co"># Sample prefix</span></span>
+<span id="cb43-7"><a href="#cb43-7" tabindex="-1"></a><span class="va">SAMPLE_PRE</span><span class="op">=</span><span class="st">&quot;UFG&quot;</span></span>
+<span id="cb43-8"><a href="#cb43-8" tabindex="-1"></a><span class="co"># Locus prefix</span></span>
+<span id="cb43-9"><a href="#cb43-9" tabindex="-1"></a><span class="va">LOCUS_PRE</span><span class="op">=</span><span class="st">&quot;L&quot;</span></span>
+<span id="cb43-10"><a href="#cb43-10" tabindex="-1"></a><span class="co"># Locus extension</span></span>
+<span id="cb43-11"><a href="#cb43-11" tabindex="-1"></a><span class="va">LOCUS_EXT</span><span class="op">=</span><span class="st">&quot;.fa&quot;</span></span></code></pre></div>
+<p>You can continue this script to include any parameters for specific
+jobs/tools, too. e.g. I included the cleaning parameters here:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a><span class="co"># Cleaning parameters (trimmomatic)</span></span>
+<span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a><span class="va">LEADING</span><span class="op">=</span>3</span>
+<span id="cb44-3"><a href="#cb44-3" tabindex="-1"></a><span class="va">TRAILING</span><span class="op">=</span>3</span>
+<span id="cb44-4"><a href="#cb44-4" tabindex="-1"></a><span class="va">SLIDINGWINDOW_LENGTH</span><span class="op">=</span>4</span>
+<span id="cb44-5"><a href="#cb44-5" tabindex="-1"></a><span class="va">SLIDINGWINDOW_SCORE</span><span class="op">=</span>20</span>
+<span id="cb44-6"><a href="#cb44-6" tabindex="-1"></a><span class="va">MINLEN</span><span class="op">=</span>51 </span></code></pre></div>
+<p>The idea is that other users (or future me) would not have to dig
+around into the scripts so much to make tweaks.</p>
+</div>
+<div id="now-for-some-tips-and-tricks-4" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS!</h1>
 </div>
 
   <!-- dynamically load mathjax for compatibility with self-contained -->
