@@ -17,7 +17,7 @@ output:
 
 Original tutorial by Michael R. May, further modified by Jenna T. B. Ekwealor
 
-Find this version of this tutorial at: [https://github.com/jenna-tb-ekwealor/chpc_workflow/tree/master]{https://github.com/jenna-tb-ekwealor/chpc_workflow/tree/master}
+Find this version of this tutorial at: [https://github.com/jenna-tb-ekwealor/chpc_workflow/tree/master](https://github.com/jenna-tb-ekwealor/chpc_workflow/tree/master)
 
 # Software Prerequisites (on local machine)
 
