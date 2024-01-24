@@ -1227,8 +1227,8 @@ you could use something other than <code>rclone</code> for file
 transfer, like <code>Globus</code> or <code>lftp</code>.</li>
 </ul>
 </div>
-<div id="now-for-some-tips-and-tricks" class="slide section level1">
-<h1>NOW FOR SOME TIPS AND TRICKS!</h1>
+<div id="now-for-some-tips-and-tricks-aliases" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS! Aliases</h1>
 <p>Aliases - Do you, too, have trouble remembering your uNID? You don’t
 have to memorize it anymore! You can create aliases for this and other
 things in your cluster. Let’s create a file called <code>.aliases</code>
@@ -1243,8 +1243,8 @@ in our home directory.</p>
 e.g. type <code>notchpeak</code> for
 <code>ssh u6049165@notchpeak.chpc.utah.edu</code>!</p>
 </div>
-<div id="now-for-some-tips-and-tricks-1" class="slide section level1">
-<h1>NOW FOR SOME TIPS AND TRICKS!</h1>
+<div id="now-for-some-tips-and-tricks-parameters-file" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS! Parameters file</h1>
 <ul>
 <li>Say one day you’re working on notchpeak, and the next day you want
 to re-run some scripts and notchpeak is down so you log into lonepeak
@@ -1258,8 +1258,8 @@ datasets, this can get tedious.</li>
 <code>parameters.sh</code> file.</li>
 </ul>
 </div>
-<div id="now-for-some-tips-and-tricks-2" class="slide section level1">
-<h1>NOW FOR SOME TIPS AND TRICKS!</h1>
+<div id="now-for-some-tips-and-tricks-parameters-file-1" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS! Parameters file</h1>
 <p>In the same directory that you keep your jobs, create a
 <code>parameters.sh</code> file.</p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a><span class="fu">nano</span> parameters.sh</span></code></pre></div>
@@ -1282,8 +1282,8 @@ datasets, this can get tedious.</li>
 <p>You’ll see that you call the parameter now as a variable with
 <strong><code>$SBATCH_PARTITION</code></strong> e.g.</p>
 </div>
-<div id="now-for-some-tips-and-tricks-3" class="slide section level1">
-<h1>NOW FOR SOME TIPS AND TRICKS!</h1>
+<div id="now-for-some-tips-and-tricks-parameters-file-2" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS! Parameters file</h1>
 <ul>
 <li>I do the same thing for account. Though I am only using one account,
 I find this makes the scripts more share-able. I could now share them as
@@ -1308,8 +1308,12 @@ example:</p>
 <span id="cb43-9"><a href="#cb43-9" tabindex="-1"></a><span class="va">LOCUS_PRE</span><span class="op">=</span><span class="st">&quot;L&quot;</span></span>
 <span id="cb43-10"><a href="#cb43-10" tabindex="-1"></a><span class="co"># Locus extension</span></span>
 <span id="cb43-11"><a href="#cb43-11" tabindex="-1"></a><span class="va">LOCUS_EXT</span><span class="op">=</span><span class="st">&quot;.fa&quot;</span></span></code></pre></div>
-<p>You can continue this script to include any parameters for specific
-jobs/tools, too. e.g. I included the cleaning parameters here:</p>
+</div>
+<div id="now-for-some-tips-and-tricks-parameters-file-3" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS! Parameters file</h1>
+<p>You can continue this <code>parameters.sh</code> to include any
+parameters for specific jobs/tools, too. e.g. I included the cleaning
+parameters here:</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a><span class="co"># Cleaning parameters (trimmomatic)</span></span>
 <span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a><span class="va">LEADING</span><span class="op">=</span>3</span>
 <span id="cb44-3"><a href="#cb44-3" tabindex="-1"></a><span class="va">TRAILING</span><span class="op">=</span>3</span>
@@ -1319,8 +1323,113 @@ jobs/tools, too. e.g. I included the cleaning parameters here:</p>
 <p>The idea is that other users (or future me) would not have to dig
 around into the scripts so much to make tweaks.</p>
 </div>
-<div id="now-for-some-tips-and-tricks-4" class="slide section level1">
-<h1>NOW FOR SOME TIPS AND TRICKS!</h1>
+<div id="now-for-some-tips-and-tricks-automate-repetitive-job-submission" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS! Automate repetitive job
+submission</h1>
+<ul>
+<li>Have you ever wanted to run the SAME tool on a bunch of different
+input files? An example that comes up for me often is building gene
+trees! I want all the trees to use the same <code>IQTREE</code> script,
+and I have 400 alignments.</li>
+</ul>
+<p>One option is to run a single job that applies the
+<code>IQTREE</code> command to each alignment sequentially. This would
+<em>work</em> (and I used to do it a lot myself, so no shame!), but it’s
+needlessly slow because there is no reason they can’t run at the same
+time. Some tools have parallelization built in, but it’s not always
+clear which do and which do not, and how to know.</p>
+<ul>
+<li>My favorite way to solve this problem is to run 1 job per alignment.
+Whoa, that’s a lot of job scripts to make! Yes, it is, but we can
+automate it.</li>
+</ul>
+</div>
+<div id="now-for-some-tips-and-tricks-automate-repetitive-job-submission-1" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS! Automate repetitive job
+submission</h1>
+<p>We are going to create some fake data files on the cluster. Make sure
+you are in <strong><code>chpc_workflow</code></strong> for this.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a><span class="fu">touch</span> data/aln_{100..110}.fa</span></code></pre></div>
+<p>Use <code>ls data</code> to see what we’ve created!</p>
+<p>Now let’s create an empty job script on our <strong>local
+machine</strong> in the <code>chpc_workflow</code> directory.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a><span class="fu">nano</span> iqtree.job</span></code></pre></div>
+<p>And here’s some stuff to put at the top for now:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a><span class="co">#SBATCH --time=0:10:00</span></span>
+<span id="cb47-3"><a href="#cb47-3" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb47-4"><a href="#cb47-4" tabindex="-1"></a><span class="co"># additional information for allocated clusters</span></span>
+<span id="cb47-5"><a href="#cb47-5" tabindex="-1"></a><span class="co">#SBATCH --account=rothfels</span></span>
+<span id="cb47-6"><a href="#cb47-6" tabindex="-1"></a><span class="co">#SBATCH --partition=notchpeak</span></span>
+<span id="cb47-7"><a href="#cb47-7" tabindex="-1"></a><span class="co">#SBATCH --mail-type=FAIL,</span><span class="re">BEGIN</span><span class="co">,</span><span class="re">END</span></span>
+<span id="cb47-8"><a href="#cb47-8" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb47-9"><a href="#cb47-9" tabindex="-1"></a><span class="co"># ----------------Modules------------------------- #</span></span>
+<span id="cb47-10"><a href="#cb47-10" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb47-11"><a href="#cb47-11" tabindex="-1"></a><span class="ex">module</span> load iqtree/2.2.2.4</span>
+<span id="cb47-12"><a href="#cb47-12" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb47-13"><a href="#cb47-13" tabindex="-1"></a><span class="co"># ----------------Your Commands------------------- #</span></span>
+<span id="cb47-14"><a href="#cb47-14" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb47-15"><a href="#cb47-15" tabindex="-1"></a><span class="co"># iqtree command for building a gene tree will go here</span></span></code></pre></div>
+</div>
+<div id="now-for-some-tips-and-tricks-automate-repetitive-job-submission-2" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS! Automate repetitive job
+submission</h1>
+<ul>
+<li><p>This job script is not done yet, but we know we wll want to run
+this script for each one of the alignments in
+<code>data/.</code></p></li>
+<li><p>Let’s create a <strong>bash</strong> script that will submit
+those jobs.</p></li>
+</ul>
+<div class="sourceCode" id="cb48"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a><span class="fu">nano</span> submit_gene_trees.sh</span></code></pre></div>
+<p>And here is what we’ll put in it:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a><span class="co"># /bin/sh</span></span>
+<span id="cb49-2"><a href="#cb49-2" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> gene_trees <span class="co"># make a directory for the output </span></span>
+<span id="cb49-3"><a href="#cb49-3" tabindex="-1"></a></span>
+<span id="cb49-4"><a href="#cb49-4" tabindex="-1"></a><span class="cf">for</span> fasta <span class="kw">in</span> data/aln<span class="pp">*</span>.fa<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb49-5"><a href="#cb49-5" tabindex="-1"></a>    <span class="ex">sbatch</span> iqtree.job <span class="va">$fasta</span> <span class="co"># submit the job for each alignment</span></span>
+<span id="cb49-6"><a href="#cb49-6" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>For each alignment, submit a job. Now, we have to include some
+special stuff in our job script!</p>
+</div>
+<div id="now-for-some-tips-and-tricks-automate-repetitive-job-submission-3" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS! Automate repetitive job
+submission</h1>
+<ul>
+<li>Return to the job script with:</li>
+</ul>
+<div class="sourceCode" id="cb50"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a><span class="fu">nano</span> iqtree.job</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a><span class="co"># build gene tree</span></span>
+<span id="cb51-2"><a href="#cb51-2" tabindex="-1"></a><span class="ex">iqtree2</span> <span class="at">-s</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span></span></code></pre></div>
+<p><strong>Note!</strong> instead of the actual alignment filename, I’m
+using “<span class="math inline">\(1&quot;! This will get replaced by
+the
+`\)</span>fasta<code>variable in the</code>submit_gene_trees.sh<code>job submission script, one for each alignment (or for each version of the</code>$fasta`
+variable).</p>
+<p>Now run</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a><span class="fu">bash</span> submit_gene_trees.sh</span></code></pre></div>
+<p>And it will submit a job per alignment.</p>
+</div>
+<div id="now-for-some-tips-and-tricks-automate-repetitive-job-submission-4" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS! Automate repetitive job
+submission</h1>
+<ul>
+<li>This can get even fancier! You can use the command
+<code>basename</code> to do all sorts of renaming type stuff. For
+example your <code>submit_gene_trees.sh</code> could be like this:</li>
+</ul>
+<div class="sourceCode" id="cb53"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a><span class="co"># /bin/sh</span></span>
+<span id="cb53-2"><a href="#cb53-2" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> gene_trees <span class="co"># make a directory for the output </span></span>
+<span id="cb53-3"><a href="#cb53-3" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="#cb53-4" tabindex="-1"></a><span class="cf">for</span> fasta <span class="kw">in</span> data/aln<span class="pp">*</span>.fa<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb53-5"><a href="#cb53-5" tabindex="-1"></a>    <span class="va">locusid</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">&quot;</span><span class="va">$fasta</span><span class="st">&quot;</span> .fa<span class="va">)</span> <span class="co"># grab the filename without the extension</span></span>
+<span id="cb53-6"><a href="#cb53-6" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&#39;the locus is&#39;</span> <span class="st">&quot;</span><span class="va">$locusid</span><span class="st">&quot;</span> <span class="co"># for troubleshooting</span></span>
+<span id="cb53-7"><a href="#cb53-7" tabindex="-1"></a>    <span class="ex">sbatch</span> ../../scripts/_02a_build_gene_trees.job <span class="va">$locusid</span></span>
+<span id="cb53-8"><a href="#cb53-8" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Then your job script like so:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a><span class="co"># build gene tree</span></span>
+<span id="cb54-2"><a href="#cb54-2" tabindex="-1"></a><span class="ex">iqtree2</span> <span class="at">-s</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span>.faa <span class="at">--prefix</span> <span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span>_gene_tree</span></code></pre></div>
+<p>And so on!</p>
 </div>
 
   <!-- dynamically load mathjax for compatibility with self-contained -->

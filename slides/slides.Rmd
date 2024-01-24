@@ -5,6 +5,9 @@ output:
   beamer_presentation:
     incremental: no
     highlight: pygments
+  ioslides_presentation:
+    incremental: no
+    highlight: pygments
   slidy_presentation:
     incremental: no
     font_adjustment: -2
@@ -907,3 +910,4 @@ iqtree2 -s "$1".faa --prefix "$1"_gene_tree
 ```
 And so on!
 
+# THE END
