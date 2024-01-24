@@ -1,16 +1,21 @@
 #!/bin/bash
-#SBATCH --partition=savio
-#SBATCH --account=fc_rothfelslab
-#SBATCH --qos=savio_normal
-#SBATCH --job-name=multiple_example
-#SBATCH --mail-user=mikeryanmay@gmail.edu
-#SBATCH --mail-type=ALL
+#SBATCH
+#SBATCH --time=00:10:00
 #SBATCH --nodes=1
-#SBATCH --time=00:00:30
-
+# additional information for allocated clusters
+#SBATCH --account=rothfels
+#SBATCH --partition=notchpeak
+#SBATCH --mail-type=FAIL,BEGIN,END
+#
+#
+# ----------------Modules------------------------- #
+#
+#
+# ----------------Your Commands------------------- #
+#
 # change to user directory
 old_dir=$(pwd)
-cd /global/scratch/users/$USER/savio_workflow/multiple/
+cd /scratch/general/nfs1/u6049165/chpc_workflow/simple/
 
 # make the output directory
 mkdir -p output
