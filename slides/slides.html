@@ -522,7 +522,8 @@ list-style-type: none;
 <body>
 <div class="slide titlepage">
   <h1 class="title">Repo and Node</h1>
-  <h1 class="subtitle">Tips and Tricks for the Cluster</h1>
+  <h1 class="subtitle">A Reproducibility Workflow + Tips and Tricks for
+the Cluster</h1>
   <p class="author">
 
   </p>
@@ -1026,7 +1027,7 @@ the most efficient and fair way possible.</p>
 <p>This means your job has a certain priority based on how much time you
 request, and how much you have used the system recently! Sometimes you
 may sit in the queue for a while (in my experience, up to a day if
-you’re doing lots of log jobs).</p>
+you’re doing lots of long jobs).</p>
 </div>
 <div id="running-jobs-on-chpc-4" class="slide section level1">
 <h1>Running jobs on CHPC</h1>
@@ -1213,8 +1214,8 @@ scripts, login to the data transfer node and do something like:</p>
 write my scripts to <strong>run</strong> from the top-level directory in
 my repository!</p>
 </div>
-<div id="conclusions" class="slide section level1">
-<h1>Conclusions</h1>
+<div id="thoughts" class="slide section level1">
+<h1>Thoughts</h1>
 <ul>
 <li>Setting this system up can be time consuming! But I think it pays
 off in the end.</li>
@@ -1225,6 +1226,61 @@ makes your work safer and easier to share.</li>
 you could use something other than <code>rclone</code> for file
 transfer, like <code>Globus</code> or <code>lftp</code>.</li>
 </ul>
+</div>
+<div id="now-for-some-tips-and-tricks" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS!</h1>
+<p>Aliases - Do you, too, have trouble remembering your uNID? You don’t
+have to memorize it anymore! You can create aliases for this and other
+things in your cluster. Let’s create a file called <code>.aliases</code>
+in our home directory.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a><span class="bu">cd</span> ~</span>
+<span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a><span class="bu">pwd</span></span>
+<span id="cb37-3"><a href="#cb37-3" tabindex="-1"></a><span class="fu">nano</span> .aliases</span></code></pre></div>
+<p>This open up the text editor. Add some custom aliases like so:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="bu">alias</span> jobs=<span class="st">&#39;squeue -u u6049165&#39;</span></span>
+<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a><span class="bu">alias</span> scratch=<span class="st">&#39;cd /scratch/general/vast/u6049165/&#39;</span></span></code></pre></div>
+<p>You can do this on your local machine, too, so that you can just
+e.g. type <code>notchpeak</code> for
+<code>ssh u6049165@notchpeak.chpc.utah.edu</code>!</p>
+</div>
+<div id="now-for-some-tips-and-tricks-1" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS!</h1>
+<ul>
+<li>Say one day you’re working on notchpeak, and the next day you want
+to re-run some scripts and notchpeak is down so you log into lonepeak
+instead. You’ll recall your script had
+<code>#SBATCH --partition=notchpeak</code> at the top. Try running your
+script again and it will immediately fail! You’ll have to edit it and
+change it to <code>lonepeak</code>. When you’re running and re-running a
+lot of jobs, or the same jobs on different datasets, this can get
+tedious. I have partially resolved this tediousness with a
+<code>parameters.sh</code> file.</li>
+</ul>
+</div>
+<div id="now-for-some-tips-and-tricks-2" class="slide section level1">
+<h1>NOW FOR SOME TIPS AND TRICKS!</h1>
+<p>In the same directory that you keep your jobs, create a
+<code>parameters.sh</code> file.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a><span class="fu">nano</span> parameters.sh</span></code></pre></div>
+<p>Add this to it:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="co"># Cluster settings</span></span>
+<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a><span class="co"># Partition must be specified on each job script but may be able to set here</span></span>
+<span id="cb40-3"><a href="#cb40-3" tabindex="-1"></a><span class="va">SBATCH_PARTITION</span><span class="op">=</span><span class="st">&quot;notchpeak&quot;</span></span>
+<span id="cb40-4"><a href="#cb40-4" tabindex="-1"></a><span class="va">SBATCH_ACCOUNT</span><span class="op">=</span><span class="st">&quot;rothfels&quot;</span></span></code></pre></div>
+<p>From now on, in all your job scripts, start like this:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a><span class="co"># Source the parameters file</span></span>
+<span id="cb41-3"><a href="#cb41-3" tabindex="-1"></a><span class="bu">source</span> parameters.sh <span class="co"># load parameters</span></span>
+<span id="cb41-4"><a href="#cb41-4" tabindex="-1"></a><span class="co">#SBATCH --time=1:00:00</span></span>
+<span id="cb41-5"><a href="#cb41-5" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb41-6"><a href="#cb41-6" tabindex="-1"></a><span class="co">#SBATCH --ntasks=8    # number of MPI tasks</span></span>
+<span id="cb41-7"><a href="#cb41-7" tabindex="-1"></a><span class="co"># additional information for allocated clusters</span></span>
+<span id="cb41-8"><a href="#cb41-8" tabindex="-1"></a><span class="co">#SBATCH --account=$SBATCH_ACCOUNT     # account</span></span>
+<span id="cb41-9"><a href="#cb41-9" tabindex="-1"></a><span class="co">#SBATCH --partition=$SBATCH_PARTITION  # partition</span></span>
+<span id="cb41-10"><a href="#cb41-10" tabindex="-1"></a></span>
+<span id="cb41-11"><a href="#cb41-11" tabindex="-1"></a><span class="ex">...</span> etc</span></code></pre></div>
+<p>You’ll see that you call the parameter now as a variable with
+<code>$SBATCH_ACCOUNT</code> e.g.</p>
 </div>
 
   <!-- dynamically load mathjax for compatibility with self-contained -->

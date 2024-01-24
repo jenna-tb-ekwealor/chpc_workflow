@@ -1,6 +1,6 @@
 ---
 title: "Repo and Node"
-subtitle: Tips and Tricks for the Cluster
+subtitle: A Reproducibility Workflow  + Tips and Tricks for the Cluster
 output:
   slidy_presentation:
     incremental: no
@@ -691,12 +691,70 @@ bash synchronizers/synchronize_CHPC_to_box.sh
 
 **BEWARE of relative file paths.** To be consistent, I write my scripts to **run** from the top-level directory in my repository!
 
-# Conclusions
+# Thoughts
 
 - Setting this system up can be time consuming! But I think it pays off in the end.
 - It's nice to have permanent backups of your code and files. This makes your work safer and easier to share.
 - This is just one example of a workflow: you could use `rclone` to transfer ALL of your files, and not use git! Or, you could use something other than `rclone` for file transfer, like `Globus` or `lftp`.
 
 
+# NOW FOR SOME TIPS AND TRICKS!
+
+Aliases
+- Do you, too, have trouble remembering your uNID? You don't have to memorize it anymore! You can create aliases for this and other things in your cluster. Let's create a file called `.aliases` in our home directory. 
+
+```{r, engine = 'bash', eval = FALSE}
+cd ~
+pwd
+nano .aliases
+```
+
+This open up the text editor. Add some custom aliases like so:
+
+```{r, engine = 'bash', eval = FALSE}
+alias jobs='squeue -u u6049165'
+alias scratch='cd /scratch/general/vast/u6049165/'
+```
+
+You can do this on your local machine, too, so that you can just e.g. type `notchpeak` for `ssh u6049165@notchpeak.chpc.utah.edu`!
+
+
+# NOW FOR SOME TIPS AND TRICKS!
+
+- Say one day you're working on notchpeak, and the next day you want to re-run some scripts and notchpeak is down so you log into lonepeak instead. You'll recall your script had `#SBATCH --partition=notchpeak` at the top. 
+- Try running your script again and it will immediately fail! You'll have to edit it and change it to `lonepeak`. When you're running and re-running a lot of jobs, or the same jobs on different datasets, this can get tedious. 
+- I have partially resolved this tediousness with a `parameters.sh` file. 
+
+# NOW FOR SOME TIPS AND TRICKS!
+
+
+In the same directory that you keep your jobs, create a `parameters.sh` file.
+```{r, engine = 'bash', eval = FALSE}
+nano parameters.sh
+```
+
+Add this to it:
+```{r, engine = 'bash', eval = FALSE}
+# Cluster settings
+# Partition must be specified on each job script but may be able to set here
+SBATCH_PARTITION="notchpeak"
+SBATCH_ACCOUNT="rothfels"
+```
+
+From now on, in all your job scripts, start like this:
+```{r, engine = 'bash', eval = FALSE}
+#!/bin/bash
+# Source the parameters file
+source parameters.sh # load parameters
+#SBATCH --time=1:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks=8    # number of MPI tasks
+# additional information for allocated clusters
+#SBATCH --account=$SBATCH_ACCOUNT     # account
+#SBATCH --partition=$SBATCH_PARTITION  # partition
+
+... etc
+```
+You'll see that you call the parameter now as a variable with **`$SBATCH_ACCOUNT`** e.g.
 
 
