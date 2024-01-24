@@ -2,4 +2,4 @@
 
 # synchronize from local to BOX
 echo "synchronizing: data"
-rclone sync data/ MY_BOX:savio_workflow/data
+rclone sync data/ Box_USU:chpc_workflow/data
