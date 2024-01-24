@@ -1,4 +1,6 @@
 **.zip
 **/log/*
 **/output/*
+
+**/.DS_Store
 data/big_data.zip
